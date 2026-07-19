@@ -1,0 +1,5 @@
+# H09
+# Hero frame - The cost (2:22-2:42): rebuilding
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A row of simple ruined houses, a broken bridge and a damaged school, with scaffolding lines overlaid on the ruins and small stick figures working to rebuild them, half-ruin half-scaffold composition suggesting time passing, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

@@ -1,0 +1,5 @@
+# W04
+# War montage beat 4/12
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A small stick figure child curled up hiding beneath a simple wooden table, knees drawn to chest, table legs and tabletop rendered in a few confident ink strokes, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

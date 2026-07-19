@@ -1,0 +1,5 @@
+# H10
+# Hero frame - Ending (2:42-3:00): children at the border
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Two small stick figure children facing each other where a border once stood, one holding a simple eraser, the beginning of a tree drawn in a few simple branching ink lines rising between them, wide open negative space, calm hopeful composition, no line or flags visible, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

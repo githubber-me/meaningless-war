@@ -1,0 +1,5 @@
+# H02
+# Hero frame - The story spreads (0:40-1:02): leaders and media
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Two stick figure leaders on a podium on opposite sides of a thin vertical dividing line, each pointing accusingly across the line at the other, radios, newspapers and old telephone shapes scattered around them, simple crowd of small stick figures listening below, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

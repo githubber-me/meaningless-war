@@ -1,0 +1,5 @@
+# W11
+# War montage beat 11/12
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Rows of medals pinned neatly onto empty folded military uniforms laid flat or hung, no figures wearing them, uniforms arranged in a simple grid, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

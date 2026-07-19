@@ -1,0 +1,5 @@
+# H06
+# Hero frame - The machinery (1:02-1:28): train departure
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A simple stick figure train with several carriages pulling away across the page, stick figure soldiers leaning out of windows waving, families of stick figures standing on a platform waving back, steam or smoke in simple ink marks, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

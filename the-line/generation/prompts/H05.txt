@@ -1,0 +1,5 @@
+# H05
+# Hero frame - The machinery (1:02-1:28): uniforms
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A line of young stick figures receiving folded uniforms handed to them one by one by an unseen hand, each figure transforming from plain clothes to a simple uniform silhouette, arranged left to right in sequence, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

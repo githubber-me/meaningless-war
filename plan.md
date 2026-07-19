@@ -2,7 +2,7 @@
 
 **Executor:** Claude Code (Sonnet or Opus)
 **Companion file:** `script.md` (the locked script; do not deviate from its timing map or rules)
-**Hard budget cap:** $20.00 USD total fal spend. This is a ceiling, not a target. Track every API call in `budget.md`.
+**Hard budget cap:** $12.00 USD total fal spend. This is a ceiling, not a target. Notify the user once cumulative spend crosses $10.00. Stop all generation immediately once cumulative spend would exceed $12.00. Track every API call in `budget.md`.
 **Output:** `the-line-final.mp4`, 1920x1080, 30fps, 3:00 exactly (5400 frames), H.264, stereo audio.
 
 ---
@@ -12,7 +12,7 @@
 This is a hybrid production:
 
 - **Remotion (cost: $0)** renders everything mechanical, typographic, and geometric: the drawn line, lettering, propaganda cards, the coin machine, map pullback, ending sequence, final card, and all red compositing. Render with `npx remotion render`, never screen capture.
-- **fal.ai (cost: capped at $20)** generates only the organic hand-drawn stills where imperfection is the point: primarily the War montage (1:28–2:00) and a small set of hero frames elsewhere.
+- **fal.ai (cost: capped at $12)** generates only the organic hand-drawn stills where imperfection is the point: primarily the War montage (1:28–2:00) and a small set of hero frames elsewhere.
 - **ElevenLabs (user-supplied)** narration arrives as eight files, `VO-01.mp3` through `VO-08.mp3`. Do not generate narration. If files are missing, build the timeline with silent placeholders of the correct duration and flag it.
 - **Music and SFX (cost: $0)** come from freesound.org or a free library. Wind, distant artillery, paper texture sounds, one sparse music bed. List every asset and license in `CREDITS.md`.
 
@@ -71,13 +71,13 @@ the-line/
 
 **Gate B:** cumulative spend under $2.00 and every shot ID has at least one acceptable draft. If a shot fails after 6 variants, redesign the prompt or move the shot to Remotion SVG instead of burning budget.
 
-### Phase C — Hero regeneration (target spend: under $8)
+### Phase C — Hero regeneration (target spend: under $9, cumulative)
 
 1. Regenerate only shots held on screen longer than one second (hero frames, roughly 20–30 shots) on FLUX.2 [pro] at $0.03 per ~1MP image, using the winning draft's prompt verbatim plus any fixes. Generate at 1920x1080 or 1344x768.
 2. Montage shots on screen under 400ms keep their Schnell drafts. Nobody sees draft flaws at 3 frames of exposure.
 3. Post-process every kept image: convert to true grayscale (kill any color leak), normalize contrast, confirm consistent paper tone against the Remotion `Paper` component. A simple Python/sharp script, applied uniformly.
 
-**Gate C:** cumulative spend under $10.00. All finals in `generation/finals/`, grayscale-verified programmatically (assert max channel divergence near zero).
+**Gate C:** cumulative spend under $9.00. All finals in `generation/finals/`, grayscale-verified programmatically (assert max channel divergence near zero).
 
 ### Phase D — Scene assembly (no spend)
 
@@ -104,7 +104,7 @@ Build each scene per `script.md`. Key implementation notes:
 ## 3. Budget ledger rules
 
 - `budget.md` is a table: date, endpoint, count, unit price, batch cost, cumulative.
-- Check cumulative before every batch. If a batch would push cumulative past $16.00, stop and report; the last $4 is reserve for final fixes only.
+- Check cumulative before every batch. Notify the user as soon as cumulative spend crosses $10.00. If a batch would push cumulative past $12.00, stop immediately and report — do not place that batch.
 - Video-generation endpoints (Wan, Kling, Veo) are **not authorized** in this plan. All motion is Remotion. If a shot truly cannot work as SVG or a still, propose it to the user with cost before generating.
 
 ## 4. Quality checklist (run before declaring done)
@@ -116,7 +116,7 @@ Build each scene per `script.md`. Key implementation notes:
 - [ ] Pencil never touches the page in S8; cut to white precedes contact
 - [ ] Final card holds 3 full seconds
 - [ ] War section cut rate ramps and ends with 8 seconds of narration-free audio
-- [ ] Total fal spend recorded and under $20.00
+- [ ] Total fal spend recorded and under $12.00
 - [ ] CREDITS.md complete
 
 ## 5. Known risks

@@ -1,0 +1,5 @@
+# W10
+# War montage beat 10/12
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A simple dinner table set with plates and chairs from a top-down or three-quarter angle, several chairs distinctly empty and pushed in, one or two chairs occupied by faint stick figures, plain tablecloth, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

@@ -1,0 +1,5 @@
+# H07
+# Hero frame - Victory (2:00-2:22): signing and handshake
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Two stick figure leaders seated at a table signing a document with a simple pen, then a second panel-like moment of them shaking hands over the table, small black and white confetti shapes falling around them, no red anywhere, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space
