@@ -7,21 +7,6 @@ const timing = SCENE_TIMINGS.find((s) => s.id === "S4Machinery")!;
 
 const BEAT_FRAMES = 195; // 780 / 4
 
-const CrossFadeLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [0, 20, BEAT_FRAMES - 30, BEAT_FRAMES - 10], [0, 1, 1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  return (
-    <AbsoluteFill style={{ opacity }}>
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 60 }}>
-        {children}
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
 // Coins fall into the machine: a handful of small black-ink circles
 // dropping in on staggered delays over the first ~90 frames of the beat.
 const FallingCoins: React.FC = () => {
@@ -80,9 +65,6 @@ export const S4Machinery: React.FC = () => {
         <AbsoluteFill>
           <Still shotId="H03" drift />
           <FallingCoins />
-          <CrossFadeLabel>
-            <Caption text="Coins become bullets, helmets, tanks." />
-          </CrossFadeLabel>
         </AbsoluteFill>
       </Sequence>
 
@@ -90,46 +72,21 @@ export const S4Machinery: React.FC = () => {
         <AbsoluteFill>
           <Still shotId="H04" drift />
           <ChalkSweep />
-          <CrossFadeLabel>
-            <Caption text="Teachers replace faces with flags." />
-          </CrossFadeLabel>
         </AbsoluteFill>
       </Sequence>
 
       <Sequence from={BEAT_FRAMES * 2} durationInFrames={BEAT_FRAMES}>
         <AbsoluteFill>
           <Still shotId="H05" drift />
-          <CrossFadeLabel>
-            <Caption text="Young figures receive uniforms." />
-          </CrossFadeLabel>
         </AbsoluteFill>
       </Sequence>
 
       <Sequence from={BEAT_FRAMES * 3} durationInFrames={timing.durationInFrames - BEAT_FRAMES * 3}>
         <AbsoluteFill>
           <Still shotId="H06" drift />
-          <CrossFadeLabel>
-            <Caption text="Families wave as trains carry soldiers away." />
-          </CrossFadeLabel>
         </AbsoluteFill>
       </Sequence>
     </AbsoluteFill>
   );
 };
 
-// A quiet on-page caption, not narration -- purely a visual anchor so each
-// beat reads clearly even without VO in this phase (Phase E adds VO-04).
-const Caption: React.FC<{ text: string }> = ({ text }) => (
-  <div
-    style={{
-      fontFamily: "Arial, sans-serif",
-      fontSize: 30,
-      color: "#1A1A1A",
-      opacity: 0.75,
-      background: "rgba(243,238,228,0.85)",
-      padding: "10px 22px",
-    }}
-  >
-    {text}
-  </div>
-);

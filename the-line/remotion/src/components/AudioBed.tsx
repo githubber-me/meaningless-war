@@ -28,12 +28,12 @@ const scene = (id: (typeof SCENE_TIMINGS)[number]["id"]) => SCENE_TIMINGS.find((
 // at its scene's frame offset (the real read begins essentially on the cut,
 // per the whisper alignment) and runs for the clip's own length, which is
 // comfortably inside its scene's span in every case:
-//  - VO-05 (War): real read is 476 frames (15.87s), well inside the
+//  - VO-05 (War): real read is 490 frames (16.34s), well inside the
 //    720-frame/24s budget script.md allows before the 1:52 narration
 //    deadline (frame 3360) -- leaving the final ~8s+ of the War scene
 //    (the crosses hold) to "music and distant wind... alone".
-//  - VO-08 (Ending): real read is 176 frames (5.88s), well inside the
-//    330-frame budget before the hesitating hand enters (S8Ending.tsx
+//  - VO-08 (Ending): real read is 192 frames (6.38s), well inside the
+//    360-frame budget before the hesitating hand enters (S8Ending.tsx
 //    HAND_START), so the hand-hover, hard cut to white, and the
 //    three-second final-card hold (script.md rule 5) stay narration-free.
 const VO_WINDOWS: { voFile: string; from: number; durationInFrames: number }[] = [
@@ -41,14 +41,16 @@ const VO_WINDOWS: { voFile: string; from: number; durationInFrames: number }[] =
   { voFile: "VO-02", from: scene("S2TheLine").from, durationInFrames: 324 },
   { voFile: "VO-03", from: scene("S3StorySpreads").from, durationInFrames: 445 },
   { voFile: "VO-04", from: scene("S4Machinery").from, durationInFrames: 426 },
-  // 476 frames / 15.87s -- ends at frame 3116, well before the frame-3360
+  // 490 frames / 16.34s (re-cut with a 0.5s tail pad so the last word's
+  // decay isn't clipped) -- ends at frame 3130, well before the frame-3360
   // (1:52.000) hard deadline from script.md.
-  { voFile: "VO-05", from: scene("S5War").from, durationInFrames: 476 },
+  { voFile: "VO-05", from: scene("S5War").from, durationInFrames: 490 },
   { voFile: "VO-06", from: scene("S6Victory").from, durationInFrames: 379 },
-  { voFile: "VO-07", from: scene("S7TheCost").from, durationInFrames: 350 },
-  // 176 frames / 5.88s -- ends at local frame 176, well before HAND_START
-  // (local frame 330) in S8Ending.tsx.
-  { voFile: "VO-08", from: scene("S8Ending").from, durationInFrames: 176 },
+  { voFile: "VO-07", from: scene("S7TheCost").from, durationInFrames: 364 },
+  // 192 frames / 6.38s (re-cut to the source's end plus a fade/pad so
+  // "began?" keeps its decay) -- ends at local frame 192, well before
+  // HAND_START (local frame 360) in S8Ending.tsx.
+  { voFile: "VO-08", from: scene("S8Ending").from, durationInFrames: 192 },
 ];
 
 const DUCK_ATTACK = 20; // frames to ramp volume in/out at each VO window edge
@@ -114,7 +116,7 @@ const VoiceOverTrack: React.FC = () => (
 //   S4Machinery.tsx BEAT_FRAMES=195, 4th beat (local 585-780) is the train
 //   S5War.tsx       MONTAGE_FRAMES=720 local (the ramping cut montage)
 //   S6Victory.tsx   SIGNING_FRAMES=240, HEADLINE_FRAMES=120 (signing + crowd reaction)
-//   S8Ending.tsx    ERASE_START=25/ERASE_FRAMES=70, TREE_START=150/TREE_FRAMES=140
+//   S8Ending.tsx    ERASE_START=60/ERASE_FRAMES=90, TREE_START=190/TREE_FRAMES=170
 
 const s2 = scene("S2TheLine");
 const s4 = scene("S4Machinery");
@@ -157,11 +159,13 @@ const SfxCues: React.FC = () => (
       <Audio src={staticFile("audio/sfx-crowd-murmur.mp3")} volume={0.15} loop />
     </Sequence>
 
-    {/* S8: pencil/eraser scratch for the erase beat and the tree-drawing beat */}
-    <Sequence from={s8.from + 25} durationInFrames={70} name="SFX eraser scratch (S8 erase line)">
+    {/* S8: pencil/eraser scratch for the erase beat and the tree-drawing
+        beat (local frames mirror S8Ending.tsx: ERASE_START=60/ERASE_FRAMES=90,
+        TREE_START=190/TREE_FRAMES=170) */}
+    <Sequence from={s8.from + 60} durationInFrames={90} name="SFX eraser scratch (S8 erase line)">
       <Audio src={staticFile("audio/sfx-pencil-scratch.mp3")} volume={0.45} loop />
     </Sequence>
-    <Sequence from={s8.from + 150} durationInFrames={140} name="SFX pencil scratch (S8 draw tree)">
+    <Sequence from={s8.from + 190} durationInFrames={170} name="SFX pencil scratch (S8 draw tree)">
       <Audio src={staticFile("audio/sfx-pencil-scratch.mp3")} volume={0.4} loop />
     </Sequence>
   </>

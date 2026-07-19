@@ -83,7 +83,17 @@ export const S2TheLine: React.FC = () => {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const handTargetY = interpolate(drawProgress, [0, 1], [lineY1 / height, lineY2 / height]);
+  // Before the draw starts, the hand slides in from above to the top of the
+  // line; once drawing begins, the pencil tip tracks the line's drawing tip
+  // exactly (progress is pinned to 1 so Hand applies no offscreen blend of
+  // its own -- targetY alone drives the motion).
+  const entryY = interpolate(frame, [0, LINE_START_FRAME], [-0.15, lineY1 / height], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.out(Easing.ease),
+  });
+  const handTargetY =
+    drawProgress > 0 ? interpolate(drawProgress, [0, 1], [lineY1 / height, lineY2 / height]) : entryY;
 
   const flagRise = interpolate(frame, [420, 540], [0, 1], {
     extrapolateLeft: "clamp",
@@ -107,12 +117,12 @@ export const S2TheLine: React.FC = () => {
 
       <AbsoluteFill style={{ opacity: handOpacity }}>
         <Hand
-          targetX={lineX / width - 0.05}
+          targetX={lineX / width}
           targetY={handTargetY}
           from="top"
           pencilColor="red"
           scale={0.9}
-          progress={drawProgress}
+          progress={1}
         />
       </AbsoluteFill>
 
