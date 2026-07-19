@@ -73,3 +73,31 @@ held during a slower section) plus, potentially, W12 (the crosses frame, held 8
 seconds in silence at the end of the War montage). W01–W11 are montage cuts under
 400ms and, per plan.md Phase C step 2, keep their Schnell drafts as-is — nobody sees
 draft-level flaws at 3 frames of exposure.
+
+## Phase C update — hero regeneration complete
+
+Confirmed hero-shot list per script.md's timing map: **H01–H10 + W12 (11 shots)**.
+Verified against the timing map directly, not just inferred: the War section
+(1:28–2:00, 32s) runs at a 2–4 cuts/second ramp for W01–W11 (well under the ~1s
+threshold — each cut is at most ~500ms and W01-11 average faster than that), except
+the script's explicit instruction "hold one frame (the rows of crosses) in silence
+into the next section" for the final 8 seconds (1:52–2:00). That held frame is W12.
+No other W-shot is held past 1s anywhere in the timing map. So the hero list is
+exactly 11 shots, not the "roughly 20-30" plan.md estimated — plan.md's estimate
+assumed a larger total shot count than the 22 actually enumerated in Phase B.
+
+All 11 were regenerated 1:1 on `fal-ai/flux-pro/v1.1` (FLUX.2-class pro endpoint) at
+1344x768 (~1.03MP, $0.031/image), using each shot's Phase B winning-draft prompt
+verbatim from `generation/prompts/`. One re-roll was needed: the first H01
+generation added an unwanted "photo of paper resting on a dark desk" vignette/frame
+device (inconsistent with the flat full-bleed paper tone used everywhere else) and
+under-rendered the second mirrored family the prompt calls for. This wasn't a
+CURATION.md-flagged defect (it didn't exist until Phase C's own generation) but was
+a clear, visually obvious compositional defect, so it was re-rolled once with the
+identical prompt (no prompt edits) and the result is a clean, full-bleed, two-family
+composition. All other 10 hero shots matched the style bible on the first try.
+
+All 11 finals post-processed (grayscale + autocontrast) and grayscale-verified
+programmatically (max channel divergence = 0 across every final). See
+`the-line/budget.md` for per-call cost and `the-line/generation/scripts/generate_heroes.py`
+/ `postprocess_finals.py` for the reusable scripts.
