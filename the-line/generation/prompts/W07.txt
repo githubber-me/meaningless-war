@@ -1,0 +1,5 @@
+# W07
+# War montage beat 7/12
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A single open schoolbook lying on the ground with flame and smoke rendered as simple jagged ink marks rising from its pages, scattered loose pages nearby, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

@@ -1,0 +1,5 @@
+# W09
+# War montage beat 9/12 (mirrored pair, part 2 of 2 - visual rhyme of W08 from the opposite side)
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A stick figure soldier in a mirrored pose to a kneeling grieving soldier, also clutching an identical small rectangular family photograph close to the chest, head bowed, on the opposite side of the composition, same photograph design as its pair, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

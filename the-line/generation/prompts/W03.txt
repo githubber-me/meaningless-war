@@ -1,0 +1,5 @@
+# W03
+# War montage beat 3/12
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Artillery flashes bursting on a night horizon, jagged simple starburst shapes of white space breaking up the dark paper, distant silhouetted figures ducking, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

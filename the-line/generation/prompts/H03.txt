@@ -1,0 +1,5 @@
+# H03
+# Hero frame - The machinery (1:02-1:28): coin machine
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A simple boxy mechanical coin-sorting machine drawn in confident ink lines, round coins falling into a slot at the top, bullets, a helmet and a small tank shape emerging from a chute at the bottom, mechanical gears sketched simply, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

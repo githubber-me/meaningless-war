@@ -1,0 +1,5 @@
+# H04
+# Hero frame - The machinery (1:02-1:28): blackboard
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A stick figure teacher at a classroom blackboard, erasing a simple drawn face and replacing it with a small flag shape, a row of stick figure children seated at desks watching, chalk dust marks, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

@@ -1,0 +1,5 @@
+# H08
+# Hero frame - Victory (2:00-2:22): homecoming
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A composition split in two: on one side an exhausted stick figure soldier embracing a small family at a doorway; on the other side a similar family sitting at a table beside a distinctly empty chair, both halves drawn in the same hand-drawn ink style, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

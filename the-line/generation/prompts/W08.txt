@@ -1,0 +1,5 @@
+# W08
+# War montage beat 8/12 (mirrored pair, part 1 of 2 - see W09)
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+A stick figure soldier kneeling, both hands clutching a small rectangular family photograph close to the chest, head bowed, helmet beside him on the ground, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

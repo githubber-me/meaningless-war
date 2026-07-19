@@ -1,0 +1,5 @@
+# W01
+# War montage beat 1/12 (script.md 1:28-2:00)
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Simple stick figure soldiers' boots marching in formation from two opposite directions toward the center of the frame, converging paths, ground-level low angle, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space

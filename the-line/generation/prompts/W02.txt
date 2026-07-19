@@ -1,0 +1,5 @@
+# W02
+# War montage beat 2/12
+# Negative prompt (applied separately): color, red, photorealistic, 3d render, gray shading, detailed faces, text, watermark
+
+Two stick figure soldiers facing each other from opposite sides of the frame, identical wide frightened eyes and open mouths, near-mirror-image poses, helmets, a thin vertical gap of blank page between them, minimalist stick figure illustration, uniform thin black ink lines, textured off-white paper background, hand-drawn imperfect linework, monochrome black and white only, no color, no shading, no gradients, wide 16:9 composition, lots of negative space
