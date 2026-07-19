@@ -112,8 +112,8 @@ const VoiceOverTrack: React.FC = () => (
 // Frame offsets below are LOCAL to each scene's own <Sequence>, mirroring
 // the constants already authored in the corresponding scene component, so
 // SFX lands exactly on the visual beat it supports:
-//   S2TheLine.tsx   LINE_START_FRAME=20, LINE_DRAW_FRAMES=260 (pencil draws the line)
-//   S4Machinery.tsx BEAT_FRAMES=195, 4th beat (local 585-780) is the train
+//   S2TheLine.tsx   LINE_START_FRAME=39, LINE_DRAW_FRAMES=156 (pencil draws the line)
+//   S4Machinery.tsx TRAIN_START=276 (the narration-locked train beat)
 //   S5War.tsx       MONTAGE_FRAMES=720 local (the ramping cut montage)
 //   S6Victory.tsx   SIGNING_FRAMES=240, HEADLINE_FRAMES=120 (signing + crowd reaction)
 //   S8Ending.tsx    ERASE_START=60/ERASE_FRAMES=90, TREE_START=190/TREE_FRAMES=170
@@ -127,12 +127,12 @@ const s8 = scene("S8Ending");
 const SfxCues: React.FC = () => (
   <>
     {/* S2: pencil scratch while the line is drawn */}
-    <Sequence from={s2.from + 20} durationInFrames={260} name="SFX pencil scratch (S2 line draw)">
+    <Sequence from={s2.from + 39} durationInFrames={156} name="SFX pencil scratch (S2 line draw)">
       <Audio src={staticFile("audio/sfx-pencil-scratch.mp3")} volume={0.5} loop />
     </Sequence>
 
     {/* S4: train chug under the fourth beat (soldiers depart) */}
-    <Sequence from={s4.from + 585} durationInFrames={195} name="SFX train (S4 departure)">
+    <Sequence from={s4.from + 276} durationInFrames={150} name="SFX train (S4 departure)">
       <Audio src={staticFile("audio/sfx-train.mp3")} volume={0.4} loop />
     </Sequence>
 

@@ -6,8 +6,16 @@ import { SCENE_TIMINGS } from "./timing";
 
 const timing = SCENE_TIMINGS.find((s) => s.id === "S6Victory")!;
 
-const SIGNING_FRAMES = 240;
-const HEADLINE_FRAMES = 120;
+// Narration-locked boundaries. VO-06's sentences land at these film times
+// (whisper-aligned); the scene starts at 120.0s, so local = (t - 120) * 30:
+//   120.0-125.9s "Eventually, the leaders met... words that had been
+//                available from the beginning" -> signing/handshake (H07)
+//   127.3s "Both sides announced victory."     -> local 216: VICTORY cards
+//   130.4s hard cut, so that
+//   130.6-132.4s "The dead did not object."    -> local 312: the H08
+//                homecoming/empty-chairs diptych, held to the scene's end.
+const SIGNING_FRAMES = 216;
+const HEADLINE_FRAMES = 96; // VICTORY cards: local 216-312 (127.2-130.4s)
 const HOMECOMING_FRAMES = timing.durationInFrames - SIGNING_FRAMES - HEADLINE_FRAMES;
 
 const CONFETTI_COUNT = 26;

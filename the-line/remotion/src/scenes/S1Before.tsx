@@ -34,7 +34,7 @@ const fadeIn = (frame: number, start: number, duration = 40) =>
  * so the two families read as nearly identical (script.md: "another
  * nearly identical family").
  */
-const Family: React.FC<{ side: "left" | "right"; frame: number; appearAt: number }> = ({
+export const Family: React.FC<{ side: "left" | "right"; frame: number; appearAt: number }> = ({
   side,
   frame,
   appearAt,

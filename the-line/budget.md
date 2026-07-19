@@ -1,8 +1,9 @@
 # Budget ledger — "The Line"
 
-Hard cap: **$12.00 USD** cumulative fal.ai spend (see plan.md section 0 and section 3).
-Notify the user once cumulative spend crosses **$10.00**. Stop all generation immediately
-if a batch would push cumulative spend past **$12.00**.
+Hard cap: **$15.00 USD** cumulative fal.ai spend (see plan.md section 0 and section 3;
+raised from $12.00 on 2026-07-19 with the user's explicit authorization). Notify the
+user once cumulative spend crosses **$10.00** (threshold unchanged). Stop all generation
+immediately if a batch would push cumulative spend past **$15.00**.
 
 As of this entry, Phase A (Remotion scaffold) is complete. No fal.ai or other paid API
 calls have been made. Cumulative spend: **$0.00**.
@@ -51,8 +52,14 @@ no mandatory notify was triggered this phase.
 | 2026-07-19 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $0.6050 | Phase C hero: W12 |
 | 2026-07-19 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $0.6360 | Phase C hero: H01 (re-roll, defect fix) |
 | 2026-07-19 | fal-ai/whisper | 1 | $0.0100 (est.) | $0.0100 | $0.6460 | Phase E: word-level transcription of user-supplied `voiceover-stick.mp3` (108.12s continuous read) to locate the 8 VO block boundaries by text alignment against script.md. fal's response did not return an itemized cost; unit price above is a conservative estimate for a single ~108s speech-to-text call, not a metered figure from the API. Even doubled or tripled, this stays nowhere near the $10.00 notify threshold. |
+| 2026-07-19 | fal-ai/whisper | 8 | $0.0100 (est.) | $0.0800 | $0.7260 | User's audio/visual sync audit: 8 whisper transcription calls on the placed VO audio (one per VO block) to derive sentence-level film-time offsets for every narration line. fal did not return itemized costs; $0.01/call is a conservative estimate, not a metered figure -- flagged as estimate. |
 
-**Post-Phase-E-transcription cumulative spend: $0.646 of $12.00 hard cap.** Nowhere near
+**Post-Phase-E-transcription cumulative spend: $0.646 of the hard cap.** Nowhere near
 the $10.00 notify threshold; no user notification triggered. No further fal.ai calls were
 needed for Phase E -- BGM and VO splitting used only ffmpeg (local, $0) once the whisper
 transcript was in hand.
+
+**Post-sync-audit cumulative spend: $0.726 (of which $0.09 is estimated, not metered) of
+the $15.00 hard cap.** Still nowhere near the $10.00 notify threshold. The subsequent
+sentence-level retiming fixes (S2/S4/S6/S7 scene interiors) were pure Remotion code
+changes: $0.

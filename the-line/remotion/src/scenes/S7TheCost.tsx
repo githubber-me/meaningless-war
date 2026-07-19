@@ -6,8 +6,22 @@ import { SCENE_TIMINGS } from "./timing";
 
 const timing = SCENE_TIMINGS.find((s) => s.id === "S7TheCost")!;
 
-const PULLBACK_FRAMES = 300;
-const REBUILD_FRAMES = timing.durationInFrames - PULLBACK_FRAMES;
+// Narration-locked boundaries. VO-07's sentences land at these film times
+// (whisper-aligned); the scene starts at 142.0s, so local = (t - 142) * 30:
+//   142.0-144.4s "The line moved a few centimetres."  -> map + border shift
+//   145.6-146.9s "Parents buried children."           -> local ~105-165: a
+//                quiet echo of the rows-of-crosses image (W12) breathes
+//                over the map, then recedes
+//   148.0s "Children inherited medals, debts..."      -> local 180: cross-
+//                dissolve into the rebuild still (H09), held to the end.
+const PULLBACK_FRAMES = 195; // map (incl. crosses echo) runs local 0-195
+const REBUILD_START = 180; // rebuild dissolve begins at 148.0s
+const REBUILD_FRAMES = timing.durationInFrames - REBUILD_START;
+// "Parents buried children" (145.6-146.9s): the crosses echo fades in just
+// ahead of the sentence, peaks under it, and is gone before the rebuild.
+const CROSSES_IN = [100, 122] as const;
+const CROSSES_OUT = [158, 180] as const;
+const CROSSES_PEAK_OPACITY = 0.45;
 
 // A tiny house glyph used at map scale (much smaller than S1's House).
 const MapHouse: React.FC<{ x: number; y?: number; s?: number }> = ({ x, y = 560, s = 1 }) => (
@@ -54,22 +68,39 @@ const MapPullback: React.FC = () => {
 
   // Pull back from a close view to a readable map -- capped at 0.45 so
   // houses, terrain and the border all stay clearly legible at the end
-  // (the point of the scene is reading the map, not losing it).
-  const zoomOut = interpolate(frame, [0, PULLBACK_FRAMES], [1.25, 0.45], {
+  // (the point of the scene is reading the map, not losing it). Completed
+  // within "The line moved a few centimetres" (142.0-144.4s -> local 0-72)
+  // so the map is fully readable while the sentence is still playing.
+  const zoomOut = interpolate(frame, [0, 84], [1.25, 0.45], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.inOut(Easing.ease),
   });
   // The border has moved "only slightly" -- a handful of pixels, not a
-  // dramatic redraw.
-  const lineShift = interpolate(frame, [0, PULLBACK_FRAMES], [0, 26], {
+  // dramatic redraw. The shift lands inside sentence 1 as well.
+  const lineShift = interpolate(frame, [12, 72], [0, 26], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const fadeOut = interpolate(frame, [PULLBACK_FRAMES - 40, PULLBACK_FRAMES], [1, 0], {
+  const fadeOut = interpolate(frame, [REBUILD_START - 10, PULLBACK_FRAMES], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+
+  // "Parents buried children" (145.6-146.9s): a restrained, non-graphic
+  // echo of the rows-of-crosses image (W12) breathing over the map for
+  // ~2s, then receding before the rebuild dissolve.
+  const crossesOpacity =
+    interpolate(frame, [CROSSES_IN[0], CROSSES_IN[1]], [0, CROSSES_PEAK_OPACITY], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.ease),
+    }) *
+    interpolate(frame, [CROSSES_OUT[0], CROSSES_OUT[1]], [1, 0], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.in(Easing.ease),
+    });
 
   const lineX = width / 2 + lineShift;
   const lineY1 = height * 0.08;
@@ -114,6 +145,12 @@ const MapPullback: React.FC = () => {
           <RedLine id="s7" x={lineX} y1={lineY1} y2={lineY2} strokeWidth={14} />
         </svg>
       </div>
+
+      {crossesOpacity > 0 ? (
+        <AbsoluteFill style={{ opacity: crossesOpacity, mixBlendMode: "multiply" }}>
+          <Still shotId="W12" />
+        </AbsoluteFill>
+      ) : null}
     </AbsoluteFill>
   );
 };
@@ -131,7 +168,7 @@ export const S7TheCost: React.FC = () => {
         <MapPullback />
       </Sequence>
 
-      <Sequence from={PULLBACK_FRAMES} durationInFrames={REBUILD_FRAMES}>
+      <Sequence from={REBUILD_START} durationInFrames={REBUILD_FRAMES}>
         <RebuildFade />
       </Sequence>
     </AbsoluteFill>
