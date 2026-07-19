@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Sequence } from "remotion";
 import { Paper } from "./components/Paper";
+import { AudioBed } from "./components/AudioBed";
 import { SCENE_TIMINGS } from "./scenes/timing";
 import { S1Before } from "./scenes/S1Before";
 import { S2TheLine } from "./scenes/S2TheLine";
@@ -34,6 +35,7 @@ export const TheLine: React.FC = () => {
   return (
     <AbsoluteFill>
       <Paper />
+      <AudioBed />
       {SCENE_TIMINGS.map((timing) => {
         const SceneComponent = SCENE_COMPONENTS[timing.id];
         return (
