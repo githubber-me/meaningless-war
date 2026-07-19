@@ -29,12 +29,26 @@ type RedLineProps = {
    * bottom of the line upward, mirroring an eraser working up the page.
    */
   erase?: number;
+  /**
+   * Unique id for this line's internal SVG mask. Required whenever more
+   * than one RedLine could be present in the DOM at once (defaults are
+   * fine for the common single-line case), so masks never collide.
+   */
+  id?: string;
 };
 
 /**
  * RedLine renders the single vertical dividing line that splits the page
  * into "US" and "THEM". It is deliberately the only component in the
  * codebase allowed to paint the locked red hex by default.
+ *
+ * Draw-on (S2) is implemented as an SVG `<path>` with `pathLength=1` so
+ * `strokeDasharray`/`strokeDashoffset` can be driven directly by frame --
+ * the classic "line draws itself" technique -- rather than by trimming
+ * coordinates. Erasing (S8) is implemented as a literal SVG `<mask>`: a
+ * white "keep" rect covering the full line, painted over by a black
+ * "erased" rect that grows upward from the bottom as `erase` increases.
+ * Must be rendered inside an enclosing `<svg>`.
  */
 export const RedLine: React.FC<RedLineProps> = ({
   x,
@@ -44,6 +58,7 @@ export const RedLine: React.FC<RedLineProps> = ({
   startFrame = 0,
   drawDurationInFrames = 0,
   erase = 0,
+  id = "redline",
 }) => {
   const frame = useCurrentFrame();
   const totalLength = y2 - y1;
@@ -57,25 +72,39 @@ export const RedLine: React.FC<RedLineProps> = ({
         })
       : 1;
 
-  const drawnLength = totalLength * drawProgress;
-  const eraseLength = totalLength * Math.min(Math.max(erase, 0), 1);
-
-  const visibleTop = y1;
-  const visibleBottom = y1 + Math.max(drawnLength - eraseLength, 0);
-
-  if (visibleBottom <= visibleTop) {
+  if (drawProgress <= 0) {
     return null;
   }
 
+  const eraseProgress = Math.min(Math.max(erase, 0), 1);
+  const eraseHeight = totalLength * eraseProgress;
+  const maskId = `redline-mask-${id}`;
+
   return (
-    <line
-      x1={x}
-      y1={visibleTop}
-      x2={x}
-      y2={visibleBottom}
-      stroke={RED}
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-    />
+    <>
+      <mask id={maskId}>
+        <rect x={x - strokeWidth} y={y1} width={strokeWidth * 2} height={totalLength} fill="white" />
+        {eraseHeight > 0 ? (
+          <rect
+            x={x - strokeWidth}
+            y={y2 - eraseHeight}
+            width={strokeWidth * 2}
+            height={eraseHeight}
+            fill="black"
+          />
+        ) : null}
+      </mask>
+      <path
+        d={`M ${x} ${y1} L ${x} ${y2}`}
+        fill="none"
+        stroke={RED}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1 - drawProgress}
+        mask={`url(#${maskId})`}
+      />
+    </>
   );
 };

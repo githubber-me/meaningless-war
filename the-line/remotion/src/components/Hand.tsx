@@ -14,6 +14,14 @@ export type HandProps = {
   pencilColor?: "black" | "red";
   /** Overall scale of the hand+pencil rig. */
   scale?: number;
+  /**
+   * Optional 0->1 override that replaces the internal spring. When set,
+   * the hand's position is driven directly by this value instead of
+   * settling once -- used by S2 so the hand can continuously lead the
+   * pencil tip along the line as it draws, rather than springing to a
+   * single fixed point and stopping.
+   */
+  progress?: number;
 };
 
 /**
@@ -29,15 +37,17 @@ export const Hand: React.FC<HandProps> = ({
   from = "top",
   pencilColor = "black",
   scale = 1,
+  progress: progressOverride,
 }) => {
   const frame = useCurrentFrame();
   const { width, height, fps } = useVideoConfig();
 
-  const progress = spring({
+  const springProgress = spring({
     frame: frame - entryFrame,
     fps,
     config: { damping: 200, mass: 0.8, stiffness: 120 },
   });
+  const progress = progressOverride ?? springProgress;
 
   const offscreen = {
     top: { x: targetX, y: -0.3 },
