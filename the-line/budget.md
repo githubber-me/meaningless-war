@@ -50,3 +50,9 @@ no mandatory notify was triggered this phase.
 | 2026-07-19 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $0.5740 | Phase C hero: H10 |
 | 2026-07-19 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $0.6050 | Phase C hero: W12 |
 | 2026-07-19 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $0.6360 | Phase C hero: H01 (re-roll, defect fix) |
+| 2026-07-19 | fal-ai/whisper | 1 | $0.0100 (est.) | $0.0100 | $0.6460 | Phase E: word-level transcription of user-supplied `voiceover-stick.mp3` (108.12s continuous read) to locate the 8 VO block boundaries by text alignment against script.md. fal's response did not return an itemized cost; unit price above is a conservative estimate for a single ~108s speech-to-text call, not a metered figure from the API. Even doubled or tripled, this stays nowhere near the $10.00 notify threshold. |
+
+**Post-Phase-E-transcription cumulative spend: $0.646 of $12.00 hard cap.** Nowhere near
+the $10.00 notify threshold; no user notification triggered. No further fal.ai calls were
+needed for Phase E -- BGM and VO splitting used only ffmpeg (local, $0) once the whisper
+transcript was in hand.
