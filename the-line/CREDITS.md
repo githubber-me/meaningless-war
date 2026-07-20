@@ -83,3 +83,62 @@ notes.
 
 _None logged yet. (Phase D — condensed display font used in `PropagandaCard`,
 if a non-system font is adopted.)_
+
+---
+
+# V2 ("The Red Thread" cut) — imagery, audio, and font provenance
+
+V2 is a complete visual revamp of the film — see `the-line/v2-treatment.md`
+for the full shot-by-shot treatment and `the-line/generation/v2/CURATION.md`
+for the per-shot draft/hero curation notes. It reuses none of v1's stills.
+
+## Generated imagery (fal.ai)
+
+All 33 finals in `the-line/remotion/public/v2/` (`R01`-`R28`, `M1`-`M5`) are
+original-prompt output from fal.ai's FLUX-family endpoints: `fal-ai/flux/schnell`
+for the curation-phase drafts (80 images across initial + re-drafted variants),
+and `fal-ai/flux-pro/v1.1` (1344x768) for the hero pass, with six shots
+(R09, R10, R11, R23, R25, M5) re-rolled once against a minimally adjusted
+prompt. Every draft and every hero was viewed with the Read tool before being
+locked as the winner — see `generation/v2/CURATION.md` for the shot-by-shot
+verdicts and known deviations. This is model-generated original imagery from
+prompts written for this production (`generation/v2/prompts/`, style bible
+noted in `v2-treatment.md`'s "Art direction" section) — no external license to
+attribute beyond fal.ai's standard API terms of service for generated output.
+All 33 finals were post-processed to exact R=G=B grayscale + autocontrast
+(programmatically verified: 0/255 max channel divergence on every file) —
+see `generation/v2/CURATION.md`'s "Post-processing" section. Total v2
+generation spend: $1.455 (cumulative project spend $2.181 of the $12.00 hard
+cap) — see `budget.md`.
+
+## The red line
+
+Exactly as in v1: the single hex `RED = "#C0392B"` constant in
+`remotion/src/components/RedLine.tsx` is the only source of red anywhere in
+the film. V2 does not bake red into any generated image; every red pixel is a
+Remotion-composited SVG path or rect, positioned per-shot in
+`remotion/src/v2/RedOverlay.tsx`.
+
+## Narration and music
+
+**Unchanged from v1** (see the Narration and Music sections above for full
+provenance/license caveats) — `VO-01.mp3`..`VO-08.mp3` and `bgm.mp3` are
+reused verbatim, same files, same placements. bgm.mp3 is played at the same
+40%-ceiling with narration ducking as v1, plus an additional dip during the
+112-120s scripted silence hold (script.md rule 3 / v2-treatment.md rule 3) so
+that stretch reads as an intentional quiet hold rather than a dropout.
+
+## Sound effects and wind — REMOVED in v2
+
+Per the user's explicit instruction, v2's audio bed is narration + music
+**only**. `wind.mp3` and all `sfx-*.mp3` beds from v1's `AudioBed.tsx` are
+not used anywhere in `AudioBedV2.tsx` / `TheLineV2.tsx`. This also sidesteps
+the "action needed" placeholder-SFX caveat noted above for v1 — v2 simply
+doesn't ship any SFX to license.
+
+## Fonts
+
+V2's type moments (`remotion/src/v2/TypeMoments.tsx`) use a system font stack
+(`"Arial Narrow", Arial, sans-serif`) at `font-weight: 900` with a
+`transform: scaleX(0.82)` condensation applied in CSS, rather than a licensed
+display font — no font file is bundled or attributed.
