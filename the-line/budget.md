@@ -63,3 +63,36 @@ transcript was in hand.
 the $15.00 hard cap.** Still nowhere near the $10.00 notify threshold. The subsequent
 sentence-level retiming fixes (S2/S4/S6/S7 scene interiors) were pure Remotion code
 changes: $0.
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7320 | v2 draft R01 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7380 | v2 draft R02 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7440 | v2 draft R03 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7500 | v2 draft R04 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7560 | v2 draft R05 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7620 | v2 draft R06 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7680 | v2 draft R07 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7740 | v2 draft R08 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7800 | v2 draft R09 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7860 | v2 draft R10 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7920 | v2 draft R11 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.7980 | v2 draft R12 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8040 | v2 draft R13 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8100 | v2 draft R14 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8160 | v2 draft R15 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8220 | v2 draft R16 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8280 | v2 draft R17 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8340 | v2 draft R18 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8400 | v2 draft R19 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8460 | v2 draft R20 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8520 | v2 draft R21 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8580 | v2 draft R22 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8640 | v2 draft R23 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8700 | v2 draft R24 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8760 | v2 draft R25 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8820 | v2 draft R26 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8880 | v2 draft R27 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.8940 | v2 draft R28 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9000 | v2 draft M1 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9060 | v2 draft M2 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9120 | v2 draft M3 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9180 | v2 draft M4 |
+| 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9240 | v2 draft M5 |
