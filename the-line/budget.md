@@ -96,3 +96,11 @@ changes: $0.
 | 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9120 | v2 draft M3 |
 | 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9180 | v2 draft M4 |
 | 2026-07-19 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9240 | v2 draft M5 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9300 | v2 draft R06 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9360 | v2 draft R16 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9420 | v2 draft R21 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9480 | v2 draft R22 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9540 | v2 draft R23 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9600 | v2 draft M4 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9660 | v2 draft M5 |
+| 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9720 | v2 draft M4 |
