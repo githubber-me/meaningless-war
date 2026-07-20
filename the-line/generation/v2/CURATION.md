@@ -49,3 +49,27 @@ signatures/scrawls do not carry into heroes automatically and were re-checked th
 - **Never fully worked:** none — all 33 shots have a usable winner.
 
 Spend for curation phase: 80 schnell images (66 initial + 14 re-drafts) = $0.240.
+
+## Hero pass (flux-pro v1.1, 1344x768 — every hero VIEWED)
+
+27/33 heroes passed on the first roll. Six re-rolled once with minimally adjusted
+prompts (adjustment logged in each prompt file header as HERO-FIX); all six re-rolls
+were accepted:
+
+- R09: first roll turned wall shadows into literal monster faces (too horror) -> r2 has plain human parent-shadows looming over children at the radio.
+- R10: first roll drifted to an indoor cinema screen -> r2 is the blank poster on a brick wall over an outdoor crowd.
+- R11: first roll lost the sash (figure from behind) + faint warm tint on flags -> r2 shows the diagonal sash facing viewer, blank banners.
+- R23: first roll generated an ORANGE candle flame (color leak, hard reject) -> r2 unlabeled map, monochrome candle, clean central border region.
+- R25: first roll had elderly adult hands -> r2 younger hands (teen-ish; closest achieved).
+- M5: draft winner was charcoal but hero regressed to photoreal macro; r2 still photographic despite forced-charcoal wording — ACCEPTED as a style outlier consistent with M1 (both flash at ~1.6s).
+
+Other hero notes: R05 has a baked BLACK stroke across the map (gives the red overlay an exact path to trace); R16's ledger shows semi-legible NUMBERS — thematically apt for "returned numbers"; R20 has three tiny figures not two (push-in can crop); R22 uniform folded on the table beside the empty chair (thread target: chair back rail or folded uniform); M4 retains faint ember specks in the hero, neutralized to grey by grayscale post.
+
+## Post-processing (v2_postprocess.py)
+
+All 33 finals collapsed to exact R=G=B grayscale + autocontrast (1% cutoff), saved to
+`finals/`, programmatically verified: max channel divergence = 0/255 on every file.
+Spot-VIEWED after post: R04 (was sepia), R23 (had candle color), M4 (embers), R19
+(lightest) — no washout, blacks intact.
+
+Total v2 spend: $1.455 (cumulative project $2.181 of $12.00 hard cap).

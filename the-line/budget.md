@@ -104,3 +104,48 @@ changes: $0.
 | 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9600 | v2 draft M4 |
 | 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9660 | v2 draft M5 |
 | 2026-07-20 | fal-ai/flux/schnell | 2 | $0.0030 | $0.0060 | $0.9720 | v2 draft M4 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.0030 | v2 hero R01 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.0340 | v2 hero R02 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.0650 | v2 hero R03 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.0960 | v2 hero R04 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.1270 | v2 hero R05 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.1580 | v2 hero R06 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.1890 | v2 hero R07 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.2200 | v2 hero R08 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.2510 | v2 hero R09 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.2820 | v2 hero R10 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.3130 | v2 hero R11 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.3440 | v2 hero R12 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.3750 | v2 hero R13 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.4060 | v2 hero R14 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.4370 | v2 hero R15 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.4680 | v2 hero R16 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.4990 | v2 hero R17 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.5300 | v2 hero R18 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.5610 | v2 hero R19 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.5920 | v2 hero R20 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.6230 | v2 hero R21 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.6540 | v2 hero R22 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.6850 | v2 hero R23 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.7160 | v2 hero R24 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.7470 | v2 hero R25 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.7780 | v2 hero R26 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.8090 | v2 hero R27 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.8400 | v2 hero R28 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.8710 | v2 hero M1 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.9020 | v2 hero M2 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.9330 | v2 hero M3 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.9640 | v2 hero M4 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $1.9950 | v2 hero M5 |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $2.0260 | v2 hero R09 (re-roll_r2) |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $2.0570 | v2 hero R10 (re-roll_r2) |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $2.0880 | v2 hero R11 (re-roll_r2) |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $2.1190 | v2 hero R23 (re-roll_r2) |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $2.1500 | v2 hero R25 (re-roll_r2) |
+| 2026-07-20 | fal-ai/flux-pro/v1.1 | 1 | $0.0310 | $0.0310 | $2.1810 | v2 hero M5 (re-roll_r2) |
+
+**V2 revamp (The Red Thread cut) generation phase complete at cumulative $2.181.**
+Task spend: $1.455 of the $4.00 revamp ceiling (80 schnell drafts $0.240 + 33 heroes
+$1.023 + 6 hero re-rolls $0.186 + 0 whisper). Note: the hard cap for the project is
+$12.00 per the user's revamp directive (supersedes the $15.00 note at the top of this
+file). Nowhere near the $10.00 notify threshold.
