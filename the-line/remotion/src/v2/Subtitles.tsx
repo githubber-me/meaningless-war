@@ -44,19 +44,21 @@ const SEGMENTS: FrameSegment[] = RAW_SEGMENTS.map((s) => ({
 }));
 
 /**
- * T1 (ENEMY, frames 1650-1860 / 55.0-62.0s) and T2 (VICTORY, frames
- * 3819-3912 / 127.3-130.4s) are silent type moments -- nothing should
- * caption over them. None of the transcript segments above land inside
- * T1's window, but "Both sides announced victory" (127.3-129.3s) DOES
- * fall entirely inside T2's window (127.3-130.4s) -- the VO for that
- * line plays under/around the VICTORY card rather than in silence, so
- * without an explicit mask that line would otherwise render on top of
- * the type moment. Hard-suppressed here per the "no subtitles over type
- * moments" rule, which takes priority over the segment data.
+ * T1 (ENEMY, frames 1650-1860 / 55.0-62.0s) is a silent type moment --
+ * nothing should caption over it, and no transcript segment lands inside
+ * its window anyway.
+ *
+ * T2 (VICTORY, frames 3819-3912 / 127.3-130.4s) is NOT suppressed:
+ * "Both sides announced victory" (127.3-129.3s) falls entirely inside
+ * T2's window, and the VO for that line genuinely plays under the
+ * VICTORY card, so the caption belongs there too -- it reads as the
+ * card's own line rather than a mistimed non-sequitur. Previously T2
+ * was hard-suppressed here, which meant that segment only ever got a
+ * flash of its fade-in before being cut off; showing it during the card
+ * fixes that.
  */
 const TYPE_MOMENT_RANGES: [number, number][] = [
   [1650, 1860], // T1
-  [3819, 3912], // T2
 ];
 
 function inTypeMoment(frame: number): boolean {
