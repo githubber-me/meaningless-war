@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Sequence, interpolate, useCurrentFrame } from "remotion";
 import { AudioBedV2 } from "./AudioBedV2";
 import { Shot } from "./Shot";
+import { Subtitles } from "./Subtitles";
 import { T1Enemy, T2Victory, T3FinalCard } from "./TypeMoments";
 import { BEATS, TOTAL_DURATION_IN_FRAMES, type Beat } from "./timing";
 
@@ -115,6 +116,7 @@ export const TheLineV2: React.FC = () => {
           <BeatContent beat={beat} />
         </CrossfadeLayer>
       ))}
+      <Subtitles />
     </AbsoluteFill>
   );
 };

@@ -12,6 +12,20 @@ type ShotProps = {
   duration: number;
 };
 
+/**
+ * User feedback (post-v2-render review): the red-line animation should
+ * only survive in 5 beats -- the war-room map draw (R05), the tower
+ * broadcast rings (R08), and the M1-M5 montage flickers. Every other
+ * shot's red overlay is switched off here (NOT deleted from
+ * RedOverlay.tsx / timing.ts's RedKind data -- the per-shot path data
+ * stays intact and easy to re-enable by extending this Set, per the
+ * user's explicit ask not to leave dead/unreachable code by ripping the
+ * paths out, while also not rendering them). T1 (ENEMY) and T2 (VICTORY)
+ * aren't Shot-based -- their red accents live inline in TypeMoments.tsx
+ * and are untouched by this allowlist.
+ */
+const KEPT_RED_SHOTS = new Set(["R05", "R08", "M1", "M2", "M3", "M4", "M5"]);
+
 // Per-direction start/end transforms. All scales stay within the
 // spec'd 1.04 -> 1.12 push-in range (or equivalent drift), applied over
 // the shot's own nominal duration so pace matches its length.
@@ -89,7 +103,7 @@ export const Shot: React.FC<ShotProps> = ({ image, camera, red, duration }) => {
           transformOrigin: "center center",
         }}
       />
-      <RedOverlay red={red} localFrame={localFrame} duration={duration} />
+      {KEPT_RED_SHOTS.has(image) && <RedOverlay red={red} localFrame={localFrame} duration={duration} />}
       <Grain />
     </AbsoluteFill>
   );
