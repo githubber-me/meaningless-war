@@ -3,200 +3,137 @@ import { AbsoluteFill, Sequence, useCurrentFrame, interpolate, Easing } from "re
 import { RedLine } from "../components/RedLine";
 import { StickFigure } from "../components/StickFigure";
 import { Hand } from "../components/Hand";
-import { Still } from "../components/Still";
 import { SCENE_TIMINGS } from "./timing";
 
 const timing = SCENE_TIMINGS.find((s) => s.id === "S8Ending")!;
 
-// Local-frame budget for the 540-frame (18s) ending, chosen so the final
-// card can hold the full 90-frame / 3-second minimum script.md rule 5
-// requires, with room left for a fade to white after it.
-const APPROACH_FRAMES = 25;
-const ERASE_FRAMES = 70;
-const FLAGS_FALL_FRAMES = 55;
-const TREE_FRAMES = 140;
-const PAYOFF_STILL_FRAMES = 40;
-const HAND_FRAMES = 80;
+// Local-frame choreography for the 540-frame (18s) ending. Unlike the
+// earlier draft (which mounted each beat in its own short-lived Sequence,
+// so children/line/flags vanished between beats), the whole page is one
+// continuous scene: elements persist and each beat layers onto the last.
+//   0-60     children walk in from both sides toward the visible red line
+//   60-150   they erase the line together (RedLine `erase` mask, bottom-up)
+//   140-200  the two flags fall away
+//   190-360  the tree draws itself where the border stood
+//   360-410  the red-pencil hand enters from above and hesitates
+//   410      HARD CUT to white -- before the pencil ever touches (rule 4)
+//   410-500  final card holds 90 frames / three full seconds (rule 5)
+//   500-540  fade to white
+const APPROACH_FRAMES = 60;
+const ERASE_START = 60;
+const ERASE_FRAMES = 90;
+const FLAGS_START = 140;
+const FLAGS_FALL_FRAMES = 60;
+const TREE_START = 190; // tree strokes stagger over ~170 frames (see Tree below)
+const HAND_START = 360;
+const WHITE_CUT_FRAME = 410; // hard cut to white
 const CARD_HOLD_FRAMES = 90; // script.md rule 5: full three seconds
 const FADE_FRAMES = 40;
-
-const APPROACH_START = 0;
-const ERASE_START = APPROACH_START + APPROACH_FRAMES; // 25
-const FLAGS_START = ERASE_START + ERASE_FRAMES; // 95
-const TREE_START = FLAGS_START + FLAGS_FALL_FRAMES; // 150
-const PAYOFF_START = TREE_START + TREE_FRAMES; // 290
-const HAND_START = PAYOFF_START + PAYOFF_STILL_FRAMES; // 330
-const WHITE_CUT_FRAME = HAND_START + HAND_FRAMES; // 410 -- hard cut to white
 const CARD_START = WHITE_CUT_FRAME; // 410
 const FADE_START = CARD_START + CARD_HOLD_FRAMES; // 500
 
-// Sanity check: the budget must exactly tile the scene's 540 frames.
+// Sanity check: the card + fade must exactly close out the scene's 540 frames.
 if (FADE_START + FADE_FRAMES !== timing.durationInFrames) {
   throw new Error("S8Ending local frame budget does not sum to the scene's duration");
 }
 
 const LINE_X = 960;
-const LINE_Y1 = 220;
-const LINE_Y2 = 900;
+const LINE_Y1 = 250;
+const GROUND_Y = 830;
+const LINE_Y2 = GROUND_Y;
+const CHILD_SIZE = 130;
+const CHILD_TOP = GROUND_Y - CHILD_SIZE;
 
-/** Two children approaching the border from either side. */
-const ChildrenApproach: React.FC = () => {
-  const frame = useCurrentFrame();
-  const t = interpolate(frame, [0, APPROACH_FRAMES], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.ease),
-  });
-  const leftX = interpolate(t, [0, 1], [200, LINE_X - 140]);
-  const rightX = interpolate(t, [0, 1], [1720, LINE_X + 140]);
-  return (
-    <AbsoluteFill>
-      <div style={{ position: "absolute", left: leftX, top: 620 }}>
-        <StickFigure pose="walking" size={140} facing={1} />
-      </div>
-      <div style={{ position: "absolute", left: rightX, top: 620 }}>
-        <StickFigure pose="walking" size={140} facing={-1} />
-      </div>
-    </AbsoluteFill>
-  );
-};
+const INK = "#1A1A1A";
 
-/** The line, being erased -- RedLine's `erase` prop drives a literal SVG mask. */
-const LineErase: React.FC = () => {
-  const frame = useCurrentFrame();
-  const erase = interpolate(frame, [0, ERASE_FRAMES], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.inOut(Easing.ease),
-  });
-  return (
-    <AbsoluteFill>
-      <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
-        <RedLine id="s8" x={LINE_X} y1={LINE_Y1} y2={LINE_Y2} strokeWidth={8} erase={erase} />
-      </svg>
-      <div style={{ position: "absolute", left: LINE_X - 200, top: 560 }}>
-        <StickFigure pose="standing" size={140} facing={1} />
-      </div>
-      <div style={{ position: "absolute", left: LINE_X + 60, top: 560 }}>
-        <StickFigure pose="standing" size={140} facing={-1} />
-      </div>
-    </AbsoluteFill>
-  );
-};
+const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-/** A small black-ink pennant falling away and fading -- never red (rule 1). */
-const FallingFlag: React.FC<{ x: number; delay: number }> = ({ x, delay }) => {
-  const frame = useCurrentFrame();
-  const t = interpolate(frame, [delay, delay + FLAGS_FALL_FRAMES - delay], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
+/** A small black-ink pennant standing beside the line, falling away after FLAGS_START. */
+const EndFlag: React.FC<{ x: number; delay: number; frame: number }> = ({ x, delay, frame }) => {
+  const t = interpolate(frame, [FLAGS_START + delay, FLAGS_START + FLAGS_FALL_FRAMES], [0, 1], {
+    ...clamp,
     easing: Easing.in(Easing.ease),
   });
-  const y = interpolate(t, [0, 1], [0, 260]);
-  const rotate = interpolate(t, [0, 1], [0, 70]);
+  const y = interpolate(t, [0, 1], [0, 300]);
+  const rotate = interpolate(t, [0, 1], [0, 75]);
   const opacity = interpolate(t, [0, 0.7, 1], [1, 1, 0]);
   return (
     <svg
       width={90}
-      height={140}
-      viewBox="0 0 90 140"
-      style={{ position: "absolute", left: x, top: 40 + y, opacity, transform: `rotate(${rotate}deg)` }}
+      height={150}
+      viewBox="0 0 90 150"
+      style={{
+        position: "absolute",
+        left: x,
+        top: GROUND_Y - 150 + y,
+        opacity,
+        transform: `rotate(${rotate}deg)`,
+        transformOrigin: "10px 150px",
+      }}
     >
-      <g fill="none" stroke="#1A1A1A" strokeWidth={4} strokeLinejoin="round" strokeLinecap="round">
-        <line x1={10} y1={140} x2={10} y2={0} />
+      <g fill="none" stroke={INK} strokeWidth={4} strokeLinejoin="round" strokeLinecap="round">
+        <line x1={10} y1={150} x2={10} y2={0} />
         <path d="M 10 0 L 80 16 L 10 32 Z" fill="#F3EEE4" />
       </g>
     </svg>
   );
 };
 
-const FlagsFall: React.FC = () => (
-  <AbsoluteFill>
-    <FallingFlag x={LINE_X - 300} delay={0} />
-    <FallingFlag x={LINE_X + 220} delay={10} />
-  </AbsoluteFill>
-);
-
-/**
- * The tree, drawn as an animated SVG path -- the same pathLength /
- * strokeDashoffset draw-on technique used by RedLine in S2, reused here in
- * plain black ink (never red) where the border used to stand.
- */
-const TreeDraw: React.FC = () => {
-  const frame = useCurrentFrame();
-  const trunkProgress = interpolate(frame, [0, 60], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const canopyProgress = interpolate(frame, [50, TREE_FRAMES], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+/** A stroke that draws itself over [start, start+duration] local frames. */
+const DrawnPath: React.FC<{
+  d: string;
+  frame: number;
+  start: number;
+  duration: number;
+  strokeWidth?: number;
+}> = ({ d, frame, start, duration, strokeWidth = 8 }) => {
+  const progress = interpolate(frame, [start, start + duration], [0, 1], clamp);
+  if (progress <= 0) return null;
   return (
-    <AbsoluteFill>
-      <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
-        <path
-          d={`M ${LINE_X} 900 L ${LINE_X} 620`}
-          fill="none"
-          stroke="#1A1A1A"
-          strokeWidth={10}
-          strokeLinecap="round"
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1 - trunkProgress}
-        />
-        <path
-          d={`M ${LINE_X} 640 C ${LINE_X - 160} 600 ${LINE_X - 140} 460 ${LINE_X} 440
-              C ${LINE_X + 140} 460 ${LINE_X + 160} 600 ${LINE_X} 640 Z`}
-          fill="none"
-          stroke="#1A1A1A"
-          strokeWidth={6}
-          strokeLinejoin="round"
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1 - canopyProgress}
-        />
-      </svg>
-    </AbsoluteFill>
-  );
-};
-
-/** A brief crossfade into H10, the illustrated payoff of the finished scene. */
-const PayoffStill: React.FC = () => {
-  const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [0, 25, PAYOFF_STILL_FRAMES - 10, PAYOFF_STILL_FRAMES], [0, 1, 1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  return (
-    <AbsoluteFill style={{ opacity }}>
-      <Still shotId="H10" />
-    </AbsoluteFill>
+    <path
+      d={d}
+      fill="none"
+      stroke={INK}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      pathLength={1}
+      strokeDasharray={1}
+      strokeDashoffset={1 - progress}
+    />
   );
 };
 
 /**
- * The hesitating hand: a fresh red-pencil Hand entering from above,
- * settling at a point that is deliberately well clear of the page surface
- * -- the target itself never reaches contact, so no amount of spring
- * settle time can cause a touch. The scene cuts to white before the
- * spring even finishes settling, adding a second layer of safety margin
- * on top of the geometric one.
+ * A recognizable simple tree -- vertical trunk, two main branches forking
+ * up-left and up-right, smaller twigs off each, and short leaf arcs at the
+ * tips -- drawn stroke by stroke where the border stood, in plain black
+ * ink (never red).
  */
-const HesitatingHand: React.FC = () => {
+const Tree: React.FC<{ frame: number }> = ({ frame }) => {
+  const t0 = TREE_START;
   return (
-    <AbsoluteFill>
-      <Hand entryFrame={0} targetX={0.5} targetY={0.32} from="top" pencilColor="red" scale={1.1} />
-    </AbsoluteFill>
+    <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
+      {/* trunk */}
+      <DrawnPath d={`M ${LINE_X} ${GROUND_Y} L ${LINE_X} 590`} frame={frame} start={t0} duration={50} strokeWidth={10} />
+      {/* main branches */}
+      <DrawnPath d={`M ${LINE_X} 660 L ${LINE_X - 105} 545`} frame={frame} start={t0 + 40} duration={35} />
+      <DrawnPath d={`M ${LINE_X} 620 L ${LINE_X + 110} 520`} frame={frame} start={t0 + 55} duration={35} />
+      <DrawnPath d={`M ${LINE_X} 590 L ${LINE_X - 40} 480`} frame={frame} start={t0 + 70} duration={30} />
+      {/* twigs */}
+      <DrawnPath d={`M ${LINE_X - 60} 595 L ${LINE_X - 125} 505`} frame={frame} start={t0 + 75} duration={25} strokeWidth={6} />
+      <DrawnPath d={`M ${LINE_X + 62} 564 L ${LINE_X + 128} 485`} frame={frame} start={t0 + 85} duration={25} strokeWidth={6} />
+      <DrawnPath d={`M ${LINE_X - 40} 480 L ${LINE_X + 15} 430`} frame={frame} start={t0 + 95} duration={25} strokeWidth={6} />
+      {/* leaf arcs at the branch tips */}
+      <DrawnPath d={`M ${LINE_X - 150} 520 Q ${LINE_X - 110} 460 ${LINE_X - 55} 495`} frame={frame} start={t0 + 105} duration={30} strokeWidth={5} />
+      <DrawnPath d={`M ${LINE_X + 55} 500 Q ${LINE_X + 115} 440 ${LINE_X + 160} 500`} frame={frame} start={t0 + 115} duration={30} strokeWidth={5} />
+      <DrawnPath d={`M ${LINE_X - 55} 445 Q ${LINE_X - 5} 385 ${LINE_X + 55} 445`} frame={frame} start={t0 + 125} duration={30} strokeWidth={5} />
+    </svg>
   );
 };
 
 const FinalCard: React.FC = () => {
   const frame = useCurrentFrame();
-  const fadeToWhite = interpolate(frame, [CARD_HOLD_FRAMES, CARD_HOLD_FRAMES + FADE_FRAMES], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const fadeToWhite = interpolate(frame, [CARD_HOLD_FRAMES, CARD_HOLD_FRAMES + FADE_FRAMES], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ backgroundColor: "#FFFFFF" }}>
       <AbsoluteFill
@@ -213,7 +150,7 @@ const FinalCard: React.FC = () => {
             fontSize: 84,
             letterSpacing: 2,
             textTransform: "uppercase",
-            color: "#1A1A1A",
+            color: INK,
             textAlign: "center",
             maxWidth: 1400,
             lineHeight: 1.3,
@@ -227,36 +164,96 @@ const FinalCard: React.FC = () => {
 };
 
 /**
- * 2:42-3:00 (frames 4860-5400, 540 local frames). Children erase the red
- * line (a literal RedLine mask animation), draw a tree where it stood,
- * then a new red-pencil hand enters and hesitates above the page. The
- * scene hard-cuts to white before any contact -- the hand's resting point
- * is geometrically above the page surface regardless of animation
- * progress, and the cut lands before the spring even finishes settling
- * (script.md rule 4). The final card then holds a full three seconds
- * (90 frames, script.md rule 5) before fading to white.
+ * 2:42-3:00 (frames 4860-5400, 540 local frames). Two children approach
+ * the visible red line from either side, erase it together (RedLine's
+ * literal SVG mask, bottom-up), the flags fall, and a simple recognizable
+ * tree draws itself where the border stood. A new red-pencil hand enters
+ * from above and hesitates -- the scene hard-cuts to white before any
+ * contact (script.md rule 4), then the final card holds three full
+ * seconds (rule 5) before fading to white.
  */
 export const S8Ending: React.FC = () => {
+  const frame = useCurrentFrame();
+
+  // -- Children -----------------------------------------------------------
+  const approach = interpolate(frame, [0, APPROACH_FRAMES], [0, 1], {
+    ...clamp,
+    easing: Easing.out(Easing.ease),
+  });
+  const leftChildX = interpolate(approach, [0, 1], [140, LINE_X - 180]);
+  const rightChildX = interpolate(approach, [0, 1], [1720, LINE_X + 100]);
+  const walking = approach < 1;
+
+  // -- Line erase ---------------------------------------------------------
+  const erase = interpolate(frame, [ERASE_START, ERASE_START + ERASE_FRAMES], [0, 1], {
+    ...clamp,
+    easing: Easing.inOut(Easing.ease),
+  });
+  // The erase front (where the eraser "is"), moving up the line.
+  const eraseFrontY = interpolate(erase, [0, 1], [LINE_Y2, LINE_Y1]);
+  const eraserVisible = frame >= ERASE_START && erase < 1;
+
   return (
     <AbsoluteFill>
-      <Sequence from={APPROACH_START} durationInFrames={APPROACH_FRAMES}>
-        <ChildrenApproach />
-      </Sequence>
-      <Sequence from={ERASE_START} durationInFrames={ERASE_FRAMES}>
-        <LineErase />
-      </Sequence>
-      <Sequence from={FLAGS_START} durationInFrames={FLAGS_FALL_FRAMES}>
-        <FlagsFall />
-      </Sequence>
-      <Sequence from={TREE_START} durationInFrames={TREE_FRAMES}>
-        <TreeDraw />
-      </Sequence>
-      <Sequence from={PAYOFF_START} durationInFrames={PAYOFF_STILL_FRAMES}>
-        <PayoffStill />
-      </Sequence>
-      <Sequence from={HAND_START} durationInFrames={HAND_FRAMES}>
-        <HesitatingHand />
-      </Sequence>
+      {frame < WHITE_CUT_FRAME ? (
+        <AbsoluteFill>
+          {/* ground stroke the whole beat stands on */}
+          <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
+            <line
+              x1={260}
+              y1={GROUND_Y}
+              x2={1660}
+              y2={GROUND_Y}
+              stroke={INK}
+              strokeWidth={4}
+              strokeLinecap="round"
+              opacity={0.5}
+            />
+          </svg>
+
+          {/* the red border line, fully drawn at scene start, then erased */}
+          <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
+            <RedLine id="s8" x={LINE_X} y1={LINE_Y1} y2={LINE_Y2} strokeWidth={8} erase={erase} />
+            {/* the children's eraser, riding the erase front */}
+            {eraserVisible ? (
+              <rect
+                x={LINE_X - 26}
+                y={eraseFrontY - 16}
+                width={52}
+                height={32}
+                rx={6}
+                fill="#F3EEE4"
+                stroke={INK}
+                strokeWidth={4}
+                transform={`rotate(-12 ${LINE_X} ${eraseFrontY})`}
+              />
+            ) : null}
+          </svg>
+
+          {/* flags on both sides; they fall after the line is erased */}
+          <EndFlag x={LINE_X - 330} delay={0} frame={frame} />
+          <EndFlag x={LINE_X + 250} delay={10} frame={frame} />
+
+          {/* the tree, drawn where the border stood */}
+          <Tree frame={frame} />
+
+          {/* the two children, persistent throughout */}
+          <div style={{ position: "absolute", left: leftChildX, top: CHILD_TOP }}>
+            <StickFigure pose={walking ? "walking" : "standing"} size={CHILD_SIZE} facing={1} />
+          </div>
+          <div style={{ position: "absolute", left: rightChildX, top: CHILD_TOP }}>
+            <StickFigure pose={walking ? "walking" : "standing"} size={CHILD_SIZE} facing={-1} />
+          </div>
+
+          {/* the hesitating red-pencil hand: spring-eases to a stop with its
+              tip well above the page; the hard cut below lands before any
+              possible contact */}
+          {frame >= HAND_START ? (
+            <Hand entryFrame={HAND_START} targetX={0.5} targetY={0.3} from="top" pencilColor="red" scale={1.1} />
+          ) : null}
+        </AbsoluteFill>
+      ) : null}
+
       {/* Hard cut to white: FinalCard's own solid white background begins
           instantly at this Sequence boundary -- a hard cut, not a
           crossfade -- unambiguously before any possibility of contact. */}

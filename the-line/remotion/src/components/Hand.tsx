@@ -60,6 +60,14 @@ export const Hand: React.FC<HandProps> = ({
 
   const tipColor = pencilColor === "red" ? RED : "#1A1A1A";
 
+  // Where the pencil TIP sits inside the 260x260 viewBox: the tip polygon
+  // point (12, 79) transformed by rotate(-35deg about (170, 90)) lands at
+  // ~(34.3, 171.7). targetX/targetY position the TIP (the part of the rig
+  // that must track the line's drawing point), so the svg's top-left corner
+  // is offset back by the scaled tip position.
+  const TIP_X = 34.3;
+  const TIP_Y = 171.7;
+
   return (
     <svg
       width={260 * scale}
@@ -67,8 +75,8 @@ export const Hand: React.FC<HandProps> = ({
       viewBox="0 0 260 260"
       style={{
         position: "absolute",
-        left: x,
-        top: y,
+        left: x - TIP_X * scale,
+        top: y - TIP_Y * scale,
         overflow: "visible",
       }}
     >

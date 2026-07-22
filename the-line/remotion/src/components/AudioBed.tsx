@@ -3,49 +3,54 @@ import { Audio, Sequence, interpolate, staticFile, useCurrentFrame } from "remot
 import { SCENE_TIMINGS } from "../scenes/timing";
 
 /**
- * Phase E audio bed (plan.md section 2 Phase E, script.md's per-section
- * "Audio" notes). Everything here is $0: eight silent VO placeholders of
- * the correct duration standing in for the user-supplied ElevenLabs files,
- * plus a programmatically-synthesized music bed, wind, and SFX layer. See
- * `the-line/CREDITS.md` for full provenance -- none of this is a licensed
- * third-party recording; it is ffmpeg-synthesized (sine tones / filtered
- * noise) placeholder audio the user should swap for real assets.
+ * Audio bed (plan.md section 2 Phase E, script.md's per-section "Audio"
+ * notes). The eight VO files are the REAL narration (split from the
+ * user-supplied `voiceover-stick.mp3` continuous read via fal-ai/whisper
+ * word-level alignment against script.md -- see the-line/budget.md and
+ * CREDITS.md for the transcription cost and exact cut boundaries). The
+ * music bed is the user-supplied `bgm.wav` (transcoded to bgm.mp3),
+ * played at a 40% volume ceiling per the user's explicit request, with
+ * additional ducking under narration layered on top of (never above)
+ * that ceiling. Wind and SFX remain synthesized secondary layers -- see
+ * `the-line/CREDITS.md` for full provenance.
  *
  * Nothing here is baked into picture; everything lives in the audio-only
- * <AudioBed/> tree so replacing a placeholder later never touches the
- * scene components.
+ * <AudioBed/> tree so replacing an asset later never touches the scene
+ * components.
  */
 
 const scene = (id: (typeof SCENE_TIMINGS)[number]["id"]) => SCENE_TIMINGS.find((s) => s.id === id)!;
 
-// Global frame windows (start, end) where narration is expected to be
-// speaking, per script.md's timing map. These drive music/wind ducking so
-// the envelope is already correct the moment real VO-01..VO-08 land --
-// nothing about the ducking logic changes when the placeholders are
-// replaced. Every window equals its scene's full span EXCEPT:
-//  - VO-05 (War): script.md is explicit that narration "ends by 1:52" --
-//    24s into the 32s scene -- leaving the final 8s (the crosses hold)
-//    "music and distant wind... alone".
-//  - VO-08 (Ending): narration covers the erase/tree-draw beats only,
-//    finishing before the hesitating hand enters (S8Ending.tsx
-//    HAND_START/CARD_START), so the hand-hover, hard cut to white, and the
-//    three-second final-card hold (script.md rule 5) are narration-free.
+// Global frame windows (start, end) where narration is actually speaking,
+// measured from the real VO-01..VO-08 clip durations (cut from
+// voiceover-stick.mp3 via fal-ai/whisper word alignment -- see
+// budget.md/CREDITS.md). These drive music/wind ducking. Each window starts
+// at its scene's frame offset (the real read begins essentially on the cut,
+// per the whisper alignment) and runs for the clip's own length, which is
+// comfortably inside its scene's span in every case:
+//  - VO-05 (War): real read is 490 frames (16.34s), well inside the
+//    720-frame/24s budget script.md allows before the 1:52 narration
+//    deadline (frame 3360) -- leaving the final ~8s+ of the War scene
+//    (the crosses hold) to "music and distant wind... alone".
+//  - VO-08 (Ending): real read is 192 frames (6.38s), well inside the
+//    360-frame budget before the hesitating hand enters (S8Ending.tsx
+//    HAND_START), so the hand-hover, hard cut to white, and the
+//    three-second final-card hold (script.md rule 5) stay narration-free.
 const VO_WINDOWS: { voFile: string; from: number; durationInFrames: number }[] = [
-  { voFile: "VO-01", from: scene("S1Before").from, durationInFrames: scene("S1Before").durationInFrames },
-  { voFile: "VO-02", from: scene("S2TheLine").from, durationInFrames: scene("S2TheLine").durationInFrames },
-  {
-    voFile: "VO-03",
-    from: scene("S3StorySpreads").from,
-    durationInFrames: scene("S3StorySpreads").durationInFrames,
-  },
-  { voFile: "VO-04", from: scene("S4Machinery").from, durationInFrames: scene("S4Machinery").durationInFrames },
-  // ends at frame 3360 == 1:52.000 exactly, per script.md.
-  { voFile: "VO-05", from: scene("S5War").from, durationInFrames: 720 },
-  { voFile: "VO-06", from: scene("S6Victory").from, durationInFrames: scene("S6Victory").durationInFrames },
-  { voFile: "VO-07", from: scene("S7TheCost").from, durationInFrames: scene("S7TheCost").durationInFrames },
-  // ends at local frame 330 (S8Ending.tsx HAND_START), well before the
-  // hard cut to white at local frame 410.
-  { voFile: "VO-08", from: scene("S8Ending").from, durationInFrames: 330 },
+  { voFile: "VO-01", from: scene("S1Before").from, durationInFrames: 487 },
+  { voFile: "VO-02", from: scene("S2TheLine").from, durationInFrames: 324 },
+  { voFile: "VO-03", from: scene("S3StorySpreads").from, durationInFrames: 445 },
+  { voFile: "VO-04", from: scene("S4Machinery").from, durationInFrames: 426 },
+  // 490 frames / 16.34s (re-cut with a 0.5s tail pad so the last word's
+  // decay isn't clipped) -- ends at frame 3130, well before the frame-3360
+  // (1:52.000) hard deadline from script.md.
+  { voFile: "VO-05", from: scene("S5War").from, durationInFrames: 490 },
+  { voFile: "VO-06", from: scene("S6Victory").from, durationInFrames: 379 },
+  { voFile: "VO-07", from: scene("S7TheCost").from, durationInFrames: 364 },
+  // 192 frames / 6.38s (re-cut to the source's end plus a fade/pad so
+  // "began?" keeps its decay) -- ends at local frame 192, well before
+  // HAND_START (local frame 360) in S8Ending.tsx.
+  { voFile: "VO-08", from: scene("S8Ending").from, durationInFrames: 192 },
 ];
 
 const DUCK_ATTACK = 20; // frames to ramp volume in/out at each VO window edge
@@ -66,15 +71,22 @@ function vocalPresence(frame: number): number {
   return presence;
 }
 
+// User-specified ceiling: bgm.wav must never exceed 40% of full scale at
+// any point in the film. Ducking under narration layers on top of (i.e.
+// multiplies further below) this ceiling -- it never raises the level
+// above it, even in the narration-free stretches, where the bed simply
+// swells back up to the full 40% ceiling rather than beyond it.
+const BGM_CEILING = 0.4;
+const BGM_DUCK_FLOOR = 0.35; // fraction of the 40% ceiling retained under VO
+
 const MusicBed: React.FC = () => {
   const frame = useCurrentFrame();
   const presence = vocalPresence(frame);
-  // Sparse/low/single-instrument bed: ducked well under narration, allowed
-  // to breathe (full level) in the narration-free stretches -- the last 8s
-  // of War (script.md: "Music and distant wind continue alone") and the
-  // Ending's hand/card/fade stretch.
-  const volume = interpolate(presence, [0, 1], [0.9, 0.22]);
-  return <Audio src={staticFile("audio/music-bed.mp3")} volume={volume} />;
+  // Full 40% ceiling in narration-free stretches (War's final ~8s+ crosses
+  // hold, the Ending's hand/card/fade stretch per script.md); ducked
+  // further under narration, but never above the 40% ceiling.
+  const volume = interpolate(presence, [0, 1], [BGM_CEILING, BGM_CEILING * BGM_DUCK_FLOOR]);
+  return <Audio src={staticFile("audio/bgm.mp3")} volume={volume} />;
 };
 
 const WindBed: React.FC = () => {
@@ -86,10 +98,10 @@ const WindBed: React.FC = () => {
   return <Audio src={staticFile("audio/wind.mp3")} volume={volume} />;
 };
 
-const VoiceOverPlaceholders: React.FC = () => (
+const VoiceOverTrack: React.FC = () => (
   <>
     {VO_WINDOWS.map((w) => (
-      <Sequence key={w.voFile} from={w.from} durationInFrames={w.durationInFrames} name={`${w.voFile} (silent placeholder)`}>
+      <Sequence key={w.voFile} from={w.from} durationInFrames={w.durationInFrames} name={`${w.voFile} (real narration)`}>
         <Audio src={staticFile(`audio/${w.voFile}.mp3`)} volume={1} />
       </Sequence>
     ))}
@@ -100,11 +112,11 @@ const VoiceOverPlaceholders: React.FC = () => (
 // Frame offsets below are LOCAL to each scene's own <Sequence>, mirroring
 // the constants already authored in the corresponding scene component, so
 // SFX lands exactly on the visual beat it supports:
-//   S2TheLine.tsx   LINE_START_FRAME=20, LINE_DRAW_FRAMES=260 (pencil draws the line)
-//   S4Machinery.tsx BEAT_FRAMES=195, 4th beat (local 585-780) is the train
+//   S2TheLine.tsx   LINE_START_FRAME=39, LINE_DRAW_FRAMES=156 (pencil draws the line)
+//   S4Machinery.tsx TRAIN_START=276 (the narration-locked train beat)
 //   S5War.tsx       MONTAGE_FRAMES=720 local (the ramping cut montage)
 //   S6Victory.tsx   SIGNING_FRAMES=240, HEADLINE_FRAMES=120 (signing + crowd reaction)
-//   S8Ending.tsx    ERASE_START=25/ERASE_FRAMES=70, TREE_START=150/TREE_FRAMES=140
+//   S8Ending.tsx    ERASE_START=60/ERASE_FRAMES=90, TREE_START=190/TREE_FRAMES=170
 
 const s2 = scene("S2TheLine");
 const s4 = scene("S4Machinery");
@@ -115,12 +127,12 @@ const s8 = scene("S8Ending");
 const SfxCues: React.FC = () => (
   <>
     {/* S2: pencil scratch while the line is drawn */}
-    <Sequence from={s2.from + 20} durationInFrames={260} name="SFX pencil scratch (S2 line draw)">
+    <Sequence from={s2.from + 39} durationInFrames={156} name="SFX pencil scratch (S2 line draw)">
       <Audio src={staticFile("audio/sfx-pencil-scratch.mp3")} volume={0.5} loop />
     </Sequence>
 
     {/* S4: train chug under the fourth beat (soldiers depart) */}
-    <Sequence from={s4.from + 585} durationInFrames={195} name="SFX train (S4 departure)">
+    <Sequence from={s4.from + 276} durationInFrames={150} name="SFX train (S4 departure)">
       <Audio src={staticFile("audio/sfx-train.mp3")} volume={0.4} loop />
     </Sequence>
 
@@ -147,11 +159,13 @@ const SfxCues: React.FC = () => (
       <Audio src={staticFile("audio/sfx-crowd-murmur.mp3")} volume={0.15} loop />
     </Sequence>
 
-    {/* S8: pencil/eraser scratch for the erase beat and the tree-drawing beat */}
-    <Sequence from={s8.from + 25} durationInFrames={70} name="SFX eraser scratch (S8 erase line)">
+    {/* S8: pencil/eraser scratch for the erase beat and the tree-drawing
+        beat (local frames mirror S8Ending.tsx: ERASE_START=60/ERASE_FRAMES=90,
+        TREE_START=190/TREE_FRAMES=170) */}
+    <Sequence from={s8.from + 60} durationInFrames={90} name="SFX eraser scratch (S8 erase line)">
       <Audio src={staticFile("audio/sfx-pencil-scratch.mp3")} volume={0.45} loop />
     </Sequence>
-    <Sequence from={s8.from + 150} durationInFrames={140} name="SFX pencil scratch (S8 draw tree)">
+    <Sequence from={s8.from + 190} durationInFrames={170} name="SFX pencil scratch (S8 draw tree)">
       <Audio src={staticFile("audio/sfx-pencil-scratch.mp3")} volume={0.4} loop />
     </Sequence>
   </>
@@ -159,8 +173,8 @@ const SfxCues: React.FC = () => (
 
 /**
  * Full audio-only layer for the film: wind + music span the whole 5400
- * frames with a ducking envelope keyed to where narration is expected,
- * eight silent VO placeholders sit at their timing-map positions, and a
+ * frames with a ducking envelope keyed to where narration actually speaks,
+ * the eight real VO clips sit at their timing-map positions, and a
  * handful of SFX cues land on specific visual beats. Mount once, as a
  * sibling to the picture <Sequence>s in TheLine.tsx.
  */
@@ -168,7 +182,7 @@ export const AudioBed: React.FC = () => (
   <>
     <WindBed />
     <MusicBed />
-    <VoiceOverPlaceholders />
+    <VoiceOverTrack />
     <SfxCues />
   </>
 );

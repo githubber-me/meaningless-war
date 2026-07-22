@@ -77,19 +77,44 @@ export const RedLine: React.FC<RedLineProps> = ({
   }
 
   const eraseProgress = Math.min(Math.max(erase, 0), 1);
+  // Fully erased: render nothing at all (the round line cap above y1 would
+  // otherwise peek out past the erase rect as a stray red dot).
+  if (eraseProgress >= 1) {
+    return null;
+  }
   const eraseHeight = totalLength * eraseProgress;
   const maskId = `redline-mask-${id}`;
 
   return (
     <>
-      <mask id={maskId}>
-        <rect x={x - strokeWidth} y={y1} width={strokeWidth * 2} height={totalLength} fill="white" />
+      {/*
+        maskUnits MUST be userSpaceOnUse with an explicit region: the default
+        ("objectBoundingBox" percentages of the masked element's bbox)
+        collapses to a zero-width region for a perfectly vertical path --
+        whose bounding box has zero width -- masking the entire line out of
+        existence.
+      */}
+      <mask
+        id={maskId}
+        maskUnits="userSpaceOnUse"
+        x={x - strokeWidth * 2}
+        y={y1 - strokeWidth * 2}
+        width={strokeWidth * 4}
+        height={totalLength + strokeWidth * 4}
+      >
+        <rect
+          x={x - strokeWidth * 2}
+          y={y1 - strokeWidth * 2}
+          width={strokeWidth * 4}
+          height={totalLength + strokeWidth * 4}
+          fill="white"
+        />
         {eraseHeight > 0 ? (
           <rect
-            x={x - strokeWidth}
+            x={x - strokeWidth * 2}
             y={y2 - eraseHeight}
-            width={strokeWidth * 2}
-            height={eraseHeight}
+            width={strokeWidth * 4}
+            height={eraseHeight + strokeWidth * 2}
             fill="black"
           />
         ) : null}
